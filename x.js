@@ -1,52 +1,66 @@
 // X / Twitter (x.com) rules. When X changes its site, this is the file to fix.
-window.ReelsFreeRules = {
-  rewrite: function (url) {
-    var path = url.pathname;
+// Each block checks on("<feature>"); the app's settings screen turns features off by setting
+// window.ReelsFreeSettings[feature] = false before this file runs. Missing settings mean on.
+(function () {
+  function on(feature) {
+    var settings = window.ReelsFreeSettings;
+    return !settings || settings[feature] !== false;
+  }
 
-    // Tapping a video opens an immersive player where swiping moves on to other videos.
-    // Open the tweet itself instead; the video still plays inline there.
-    var video = path.match(/^\/(\w+\/status\/\d+)\/video\/\d+\/?$/);
-    if (video) return url.origin + "/" + video[1];
+  window.ReelsFreeRules = {
+    rewrite: function (url) {
+      var path = url.pathname;
 
-    return null;
-  },
+      // Tapping a video opens an immersive player where swiping moves on to other videos.
+      // Open the tweet itself instead; the video still plays inline there.
+      if (on("videoSwipe")) {
+        var video = path.match(/^\/(\w+\/status\/\d+)\/video\/\d+\/?$/);
+        if (video) return url.origin + "/" + video[1];
+      }
 
-  css: "",
-  linkContains: [],
-  cardSelector: null,
+      return null;
+    },
 
-  sweep: function (document, helpers) {
-    var FOR_YOU = /^(for you|sana özel)$/i;
-    var FOLLOWING = /^(following|takip edilenler)$/i;
-    var AD = /^(ad|promoted|reklam|tanıtılan)$/i;
+    css: "",
+    linkContains: [],
+    cardSelector: null,
 
-    // Home timeline: hide the algorithmic "For you" tab and stay on "Following".
-    var tabs = document.querySelectorAll('[role="tab"]');
-    var forYou = null;
-    var following = null;
-    tabs.forEach(function (tab) {
-      var text = tab.textContent.trim();
-      if (FOR_YOU.test(text)) forYou = tab;
-      else if (FOLLOWING.test(text)) following = tab;
-    });
-    if (forYou && following) {
-      if (forYou.getAttribute("aria-selected") === "true") following.click();
-      helpers.hide(forYou.closest('[role="presentation"]') || forYou);
-    }
+    sweep: function (document, helpers) {
+      var FOR_YOU = /^(for you|sana özel)$/i;
+      var FOLLOWING = /^(following|takip edilenler)$/i;
+      var AD = /^(ad|promoted|reklam|tanıtılan)$/i;
 
-    // Promoted tweets carry a short "Ad" label outside the tweet text.
-    document.querySelectorAll('article[data-testid="tweet"]').forEach(function (tweet) {
-      var labels = tweet.querySelectorAll("span");
-      for (var i = 0; i < labels.length; i++) {
-        var label = labels[i];
-        if (label.closest('[data-testid="tweetText"]')) continue;
-        if (AD.test(label.textContent.trim())) {
-          helpers.hide(tweet.closest('[data-testid="cellInnerDiv"]') || tweet);
-          return;
+      // Home timeline: hide the algorithmic "For you" tab and stay on "Following".
+      if (on("forYou")) {
+        var forYou = null;
+        var following = null;
+        document.querySelectorAll('[role="tab"]').forEach(function (tab) {
+          var text = tab.textContent.trim();
+          if (FOR_YOU.test(text)) forYou = tab;
+          else if (FOLLOWING.test(text)) following = tab;
+        });
+        if (forYou && following) {
+          if (forYou.getAttribute("aria-selected") === "true") following.click();
+          helpers.hide(forYou.closest('[role="presentation"]') || forYou);
         }
       }
-    });
 
-    helpers.hideAppPrompts();
-  }
-};
+      // Promoted tweets carry a short "Ad" label outside the tweet text.
+      if (on("ads")) {
+        document.querySelectorAll('article[data-testid="tweet"]').forEach(function (tweet) {
+          var labels = tweet.querySelectorAll("span");
+          for (var i = 0; i < labels.length; i++) {
+            var label = labels[i];
+            if (label.closest('[data-testid="tweetText"]')) continue;
+            if (AD.test(label.textContent.trim())) {
+              helpers.hide(tweet.closest('[data-testid="cellInnerDiv"]') || tweet);
+              return;
+            }
+          }
+        });
+      }
+
+      if (on("appPrompts")) helpers.hideAppPrompts();
+    }
+  };
+})();

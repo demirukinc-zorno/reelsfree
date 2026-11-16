@@ -1,5 +1,6 @@
-// Rules version: 2026-11-03.2
+// Rules version: 2026-11-16.1
 // Shared runtime, injected right after the platform's rules file at document start.
+// The app sets window.ReelsFreeSettings = { feature: bool } first (settings screen toggles).
 // The platform file sets window.ReelsFreeRules = { rewrite(url), css, linkContains, cardSelector, sweep? }.
 // sweep(document, helpers) runs on every DOM change; helpers = { hide(el), hideAppPrompts() }.
 // blockSwipe(fromURL, toURL) returns true when an untapped URL change is a swipe to block.
