@@ -4,7 +4,19 @@
 
 ReelsFree is a personal iPhone app that opens the mobile websites of Instagram, YouTube and X and removes their short-video feeds. You keep your home feed, messages, profiles and search. Reels, Shorts and the algorithmic "For you" timeline are gone.
 
-This repository holds the blocking rules the app runs. When a site changes and something slips back in, the fix lands here and reaches the phone without reinstalling the app.
+This repository holds the app's releases and the blocking rules it runs. When a site changes and something slips back in, the fix lands here and reaches the phone without reinstalling the app.
+
+## Install
+
+ReelsFree is not on the App Store. You install it yourself with a free Apple ID.
+
+1. Download `ReelsFree-<version>.ipa` from the [latest release](../../releases/latest).
+2. Open it with [AltStore](https://altstore.io) or [Sideloadly](https://sideloadly.io) and sign in with your Apple ID. They sign the app for your iPhone and install it.
+3. On the iPhone, turn on **Settings → Privacy & Security → Developer Mode**, then trust your Apple ID under **Settings → General → VPN & Device Management**.
+
+With a free Apple ID the app stops opening after 7 days. Refresh it in AltStore, or install it again with Sideloadly. Your sign-ins and settings stay.
+
+The app follows your iPhone's language, English or Turkish. To pick one yourself, open **Settings → Language** in the app.
 
 ## What gets removed
 
