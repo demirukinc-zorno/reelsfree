@@ -62,8 +62,8 @@ Each site file sets `window.ReelsFreeRules` and checks `on("<switch>")` before e
 ## Updating the rules
 
 1. Edit the site's file and, if needed, `common.js`.
-2. Raise the version on the first line of `common.js`, for example `2026-11-16.2` to `2026-11-16.3`. An unchanged or lower version is ignored by newer app builds.
-3. Push. GitHub's raw file cache can take a few minutes; the phone picks the change up the next time the app opens.
+2. Raise the version on the first line of `common.js`, for example `2026-11-16.2` to `2026-11-16.3`, so you can tell versions apart. A version lower than the one built into the app is ignored.
+3. Push. GitHub's raw file cache can take a few minutes. The app picks the change up the next time it opens; a site that is already on screen switches over on its next page load or refresh.
 
 Keep these files identical to `ReelsFree/Rules/` in the app's source.
 
