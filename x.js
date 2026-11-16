@@ -51,7 +51,8 @@
           var labels = tweet.querySelectorAll("span");
           for (var i = 0; i < labels.length; i++) {
             var label = labels[i];
-            if (label.closest('[data-testid="tweetText"]')) continue;
+            // Tweet text and display names can say "Ad" too; only the label outside them counts.
+            if (label.closest('[data-testid="tweetText"], [data-testid="User-Name"]')) continue;
             if (AD.test(label.textContent.trim())) {
               helpers.hide(tweet.closest('[data-testid="cellInnerDiv"]') || tweet);
               return;
