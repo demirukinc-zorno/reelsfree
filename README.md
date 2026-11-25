@@ -2,7 +2,7 @@
   <img src="assets/banner.svg" alt="ReelsFree: Instagram, YouTube and X without the endless swipe" width="100%">
 </p>
 
-ReelsFree is a personal iPhone app that opens the mobile websites of Instagram, YouTube and X and removes their short-video feeds. You keep your home feed, messages, profiles and search. Reels, Shorts and the algorithmic "For you" timeline are gone.
+ReelsFree is a personal iPhone app that opens the mobile websites of Instagram, YouTube and X and removes their short-video feeds. TikTok opens to your messages only. You keep your home feed, messages, profiles and search. Reels, Shorts and the algorithmic "For you" timeline are gone.
 
 This repository holds the app's releases and the blocking rules it runs. When a site changes and something slips back in, the fix lands here and reaches the phone without reinstalling the app.
 
@@ -25,8 +25,11 @@ The app follows your iPhone's language, English or Turkish. To pick one yourself
 | Instagram | Home feed, stories, DMs, profiles, search | Reels tab and feed, profile Reels tab, Explore grid, swiping from one reel to the next |
 | YouTube | Home, subscriptions, search, regular videos | Shorts tab, shelves and cards, swipe between Shorts, Playables games |
 | X | Following timeline, DMs, notifications, profiles | "For you" tab, swipeable video player, promoted posts |
+| TikTok | Messages | Everything else: For You, Explore, profiles, live, shared videos |
 
 A reel or Short someone sends you still opens, on its own. There is no next one to swipe to.
+
+TikTok's phone site has no messages, so the app opens TikTok as its desktop site. It looks a little small on a phone.
 
 ## How it works
 
@@ -47,6 +50,7 @@ Every protection can be switched off per site in the app's Settings screen. A sw
 | Instagram | Reels tab, reel swiping, profile Reels tab, Explore, "Open the app" banners |
 | YouTube | Shorts, Shorts swiping, Playables, background audio |
 | X | "For you", video swiping, promoted posts, "Open the app" banners |
+| TikTok | Messages only, shared videos, "Open the app" banners |
 
 ## Files
 
@@ -56,6 +60,7 @@ Every protection can be switched off per site in the app's Settings screen. A sw
 | [`instagram.js`](instagram.js) | Instagram rules |
 | [`youtube.js`](youtube.js) | YouTube rules |
 | [`x.js`](x.js) | X rules |
+| [`tiktok.js`](tiktok.js) | TikTok rules: everything except messages and sign-in goes to sign-in, then messages |
 
 Each site file sets `window.ReelsFreeRules` and checks `on("<switch>")` before each rule. With no settings present, every rule is on.
 
