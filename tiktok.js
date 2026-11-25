@@ -10,7 +10,7 @@
 
   // Sign-in and account pages must load, or you can't log in to reach your messages.
   var ALLOWED = /^\/(?:messages|login|signup|logout|passport|auth|oauth|legal|privacy|setting)(?:\/|$)/;
-  var VIDEO = /^\/@[^\/]+\/(?:video|photo)\/\d+/;
+  var VIDEO = /^\/@[^\/]+\/(?:video|photo)\/(\d+)/;
 
   window.ReelsFreeRules = {
     rewrite: function (url) {
@@ -22,6 +22,14 @@
       if (!on("messagesOnly")) return null;
       // Signed out, TikTok bounces /messages to For You; its sign-in page returns to messages afterwards.
       return url.origin + "/login?redirect_url=" + encodeURIComponent(url.origin + "/messages");
+    },
+
+    // An allowed shared video must not lead on to the next one: moving from one video to another
+    // without a tap is a swipe, and common.js sends you back.
+    blockSwipe: function (from, to) {
+      var a = from.pathname.match(VIDEO);
+      var b = to.pathname.match(VIDEO);
+      return !!(a && b && a[1] !== b[1]);
     },
 
     css: "",
